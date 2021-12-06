@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ghostbin_rs</title>
+		<link rel="stylesheet" href="/static/app.css">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="/static/app.js"></script>
+	</head>
+	<body>
+		<form action="/new" method="post" class="textarea-size">
+			<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/">
+						<img src="/static/favicon.ico" alt="" width="25" height="25" class="d-inline-block align-text-top">
+						ghostbin_rs
+					</a>
+
+					<span class="navbar-text">new paste</span>
+					
+					<div>
+						<button class="btn btn-sml btn-outline-secondary las la-wrench" type="Button"></button>
+						<button class="btn btn-sml btn-outline-secondary las la-clock" type="Button"></button>
+						<button class="btn btn-sml btn-outline-secondary las la-key" type="Button"></button>
+						
+						<select name="language" class="selectpicker" data-live-search="true" id="language">
+							{{#each Categories}}
+								<optgroup label="{{CategoryName}}">
+									{{#each Languages}}
+										<option value="{{Name}}">{{Name}}</option>
+									{{/each}}
+								</optgroup>
+							{{/each}}
+						</select>
+						<button class="btn btn-sml btn-outline-secondary las la-save" type="submit"></button>
+					 </div>
+				</div>
+			</nav>
+
+			<textarea name="code" id="code-editor" class="code" autofocus="autofocus" rows="20" wrap="off"></textarea>
+		</form>
+
+		<!-- <div id="line-numbers" class="line-numbers">
+			<span>1</span>
+		</div> -->
+	</body>
+</html>
