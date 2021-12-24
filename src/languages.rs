@@ -4,46 +4,46 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Language {
-	pub Name: String,
+	pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Category {
-	pub CategoryName: String,
-	pub Languages: Vec<Language>,
+	pub category_name: String,
+	pub languages: Vec<Language>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Languages {
-	pub Categories: Vec<Category>,
+	pub categories: Vec<Category>,
 }
 
-pub fn Load() -> Languages {
+pub fn load() -> Languages {
 	Languages {
-		Categories: vec![
+		categories: vec![
 			Category {
-				CategoryName: String::from("Text"),
-				Languages: vec![
+				category_name: String::from("Text"),
+				languages: vec![
 					Language {
-						Name: String::from("Plain Text")
+						name: String::from("Plain Text")
 					},
 					Language{
-						Name: String::from("Markdown")
+						name: String::from("Markdown")
 					},
 				]
 			},
 			
 			Category {
-				CategoryName: String::from("C Family"),
-				Languages: vec![
+				category_name: String::from("C Family"),
+				languages: vec![
 					Language {
-						Name: String::from("C")
+						name: String::from("C")
 					},
 					Language {
-						Name: String::from("C++")
+						name: String::from("C++")
 					},
 					Language {
-						Name: String::from("Objective-C")
+						name: String::from("Objective-C")
 					},
 				]
 			}

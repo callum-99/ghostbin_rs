@@ -25,10 +25,10 @@
 						<button class="btn btn-sml btn-outline-secondary las la-key" type="Button"></button>
 						
 						<select name="language" class="selectpicker" data-live-search="true" id="language">
-							{{#each Categories}}
-								<optgroup label="{{CategoryName}}">
-									{{#each Languages}}
-										<option value="{{Name}}">{{Name}}</option>
+							{{#each categories}}
+								<optgroup label="{{category_name}}">
+									{{#each languages}}
+										<option value="{{name}}">{{name}}</option>
 									{{/each}}
 								</optgroup>
 							{{/each}}

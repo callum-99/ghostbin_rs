@@ -11,7 +11,7 @@ mod languages;
 
 #[get("/")]
 fn index() -> Template {
-	let context = languages::Load();
+	let context = languages::load();
 	Template::render("index", &context)
 }
 
@@ -23,16 +23,16 @@ fn new_paste(user_input: Form<paste::UserInput>) -> Redirect {
 
 #[get("/paste/<paste_id>")]
 fn get_paste(paste_id: String) -> Template {
-	let context = paste::Paste::New(paste_id, languages::Language{Name: String::from("Plain Text")}, false, String::from("Test code"));
+	let context = paste::Paste::new(paste_id, languages::Language{name: String::from("Plain Text")}, false, String::from("Test code"));
 
 	Template::render("paste", &context)
 }
 
 #[get("/paste/<paste_id>/raw")]
 fn get_paste_raw(paste_id: String) -> String {
-	let paste = paste::Paste::New(paste_id, languages::Language{Name: String::from("Plain Text")}, false, String::from("Test code"));
+	let paste = paste::Paste::new(paste_id, languages::Language{name: String::from("Plain Text")}, false, String::from("Test code"));
 
-	paste.Code
+	paste.code
 }
 
 #[launch]
