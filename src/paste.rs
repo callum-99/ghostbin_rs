@@ -2,29 +2,29 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde::{Serialize, Deserialize};
 
-use rocket::form::Form;
+//use rocket::form::Form;
 
 use crate::languages::Language;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Paste {
-	pub Id: String,
-	pub Language: Language,
-	pub Encrypted: bool,
-	pub Expiration: Option<u64>,
-	pub Created: u64,
-	pub Code: String,
+	pub id: String,
+	pub language: Language,
+	pub encrypted: bool,
+	pub expiration: Option<u64>,
+	pub created: u64,
+	pub code: String,
 }
 
 impl Paste {
-	pub fn New(Id: String, Language: Language, Encrypted: bool, Code: String) -> Paste {
+	pub fn new(id: String, language: Language, encrypted: bool, code: String) -> Paste {
 		Paste {
-			Id,
-			Language,
-			Encrypted,
-			Expiration: Some(0),
-			Created: SystemTime::now().duration_since(UNIX_EPOCH).expect("Error: negative time").as_millis() as u64,
-			Code: Code,
+			id,
+			language,
+			encrypted,
+			expiration: Some(0),
+			created: SystemTime::now().duration_since(UNIX_EPOCH).expect("Error: negative time").as_millis() as u64,
+			code,
 		}
 	}
 }
