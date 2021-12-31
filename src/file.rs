@@ -9,3 +9,11 @@ pub fn get_paste(paste_id: String) -> Result<paste::Paste, String> {
 		Err("Paste not found".to_string())
 	}
 }
+
+pub fn write_paste(paste: paste::Paste) -> Result<String, String> {
+	if let Ok(resp) = fs::write(format!("{}/{}", config::Config::load().paste_path, paste.id), paste.code) {
+		Ok(paste.id)
+	} else {
+		Err("Can't save paste".to_string())
+	}
+}
