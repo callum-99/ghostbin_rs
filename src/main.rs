@@ -1,18 +1,22 @@
 #[macro_use] extern crate rocket;
 
-use rocket_dyn_templates::{Template, handlebars};
+use rocket_dyn_templates::{Template};
 use rocket::fs::{FileServer, relative};
 use rocket::form::Form;
 use rocket::response::Redirect;
+use rocket::http::Status;
+
+use std::env;
 
 mod paste;
-
 mod languages;
+mod file;
+mod config;
 
 #[get("/")]
 fn index() -> Template {
-	let context = languages::load();
-	Template::render("index", &context)
+	let languages = languages::load();
+	Template::render("index", &languages)
 }
 
 #[post("/new", data = "<user_input>")]
@@ -22,17 +26,21 @@ fn new_paste(user_input: Form<paste::UserInput>) -> Redirect {
 }
 
 #[get("/paste/<paste_id>")]
-fn get_paste(paste_id: String) -> Template {
-	let context = paste::Paste::new(paste_id, languages::Language{name: String::from("Plain Text")}, false, String::from("Test code"));
-
-	Template::render("paste", &context)
+fn get_paste(paste_id: String) -> Result<Template, Status> {
+	if let Ok(paste) = file::get_paste(paste_id) {
+		Ok(Template::render("paste", &paste))
+	} else {
+		Err(Status::NotFound)
+	}
 }
 
 #[get("/paste/<paste_id>/raw")]
-fn get_paste_raw(paste_id: String) -> String {
-	let paste = paste::Paste::new(paste_id, languages::Language{name: String::from("Plain Text")}, false, String::from("Test code"));
-
-	paste.code
+fn get_paste_raw(paste_id: String) -> Result<String, Status> {
+	if let Ok(paste) = file::get_paste(paste_id) {
+		Ok(paste.code)
+	} else {
+		Err(Status::NotFound)
+	}
 }
 
 #[launch]
