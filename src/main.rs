@@ -22,12 +22,14 @@ fn index() -> Template {
 }
 
 #[post("/new", data = "<user_input>")]
-fn new_paste(user_input: Form<paste::UserInput>) -> Redirect {
-	println!("Language: '{}'\nCode: '{}'", user_input.language, user_input.code);
+fn new_paste(user_input: Form<paste::UserInput>) -> Result<Redirect, Status> {
 	let id = format!("{}", Uuid::new_v4().to_simple());
 	let paste = paste::Paste::new((&id).to_string(), languages::Language{name: String::from(&user_input.language)}, false, String::from(&user_input.code));
-	file::write_paste(paste);
-	Redirect::to(format!("/paste/{}", id))
+	if let Ok(_) = file::write_paste(paste) {
+		Ok(Redirect::to(format!("/paste/{}", id)))
+	} else {
+		Err(Status::InternalServerError)
+	}
 }
 
 #[get("/paste/<paste_id>")]
