@@ -7,9 +7,8 @@ use xattr;
 pub fn get_paste(paste_id: String) -> Result<paste::Paste, String> {
 	let path = format!("{}/{}", config::Config::load().paste_path, paste_id);
 	if let Ok(paste_contents) = fs::read_to_string(&path) {
-		// let language = get_xattr("language", &path);
 		let language = std::str::from_utf8(&xattr::get(path, "language").unwrap().unwrap()).unwrap().to_string();
-		Ok(paste::Paste::new(paste_id, languages::Language{name: language}, false, paste_contents))
+		Ok(paste::Paste::new(paste_id, languages::get_language_by_name(language).unwrap(), false, paste_contents))
 	} else {
 		Err("Paste not found".to_string())
 	}
