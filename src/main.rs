@@ -21,6 +21,11 @@ fn index() -> Template {
 	Template::render("index", &languages)
 }
 
+#[get("/favicon.ico")]
+fn favicon() -> Redirect {
+	Redirect::to("/static/favicon.ico")
+}
+
 #[post("/new", data = "<user_input>")]
 fn new_paste(user_input: Form<paste::UserInput>) -> Result<Redirect, Status> {
 	let id = format!("{}", Uuid::new_v4().to_simple());
@@ -53,7 +58,7 @@ fn get_paste_raw(paste_id: String) -> Result<String, Status> {
 #[launch]
 fn rocket() -> _ {
 	rocket::build()
-		.mount("/", routes![index, new_paste, get_paste, get_paste_raw])
+		.mount("/", routes![index, favicon, new_paste, get_paste, get_paste_raw])
 		.mount("/static", FileServer::from(relative!("static"))) 
 		.attach(Template::fairing())
 }
