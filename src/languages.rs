@@ -146,7 +146,7 @@ pub fn load() -> Languages {
 						sname: String::from("ini")
 					},
 					Language {
-						name: String::from("Jave"),
+						name: String::from("Java"),
 						sname: String::from("java")
 					},
 					Language {
@@ -235,7 +235,7 @@ pub fn load() -> Languages {
 					},
 					Language {
 						name: String::from("Swift"),
-						sname: String::from("Swift")
+						sname: String::from("swift")
 					},
 					Language {
 						name: String::from("TOML"),
@@ -281,7 +281,7 @@ pub fn get_language_by_name(name: String) -> Result<Language, String> {
 		}
 	}
 
-	return Err("Cant find the language".to_string());
+	return Err(format!("Cant find the language named: {}", name));
 }
 
 pub fn get_language_by_sname(sname: String) -> Result<Language, String> {
@@ -293,5 +293,5 @@ pub fn get_language_by_sname(sname: String) -> Result<Language, String> {
 		}
 	}
 
-	return Err("Cant find the language".to_string());
+	return Err(format!("Cant find the language snamed: {}", sname));
 }
