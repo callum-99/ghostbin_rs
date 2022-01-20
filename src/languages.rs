@@ -40,11 +40,7 @@ pub fn load() -> Languages {
 				category_name: String::from("C Family"),
 				languages: vec![
 					Language {
-						name: String::from("C"),
-						sname: String::from("c_cpp")
-					},
-					Language {
-						name: String::from("C++"),
+						name: String::from("C/C++"),
 						sname: String::from("c_cpp")
 					},
 					Language {
