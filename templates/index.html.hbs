@@ -2,11 +2,14 @@
 <html>
 	<head>
 		<title>ghostbin_rs</title>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<link rel="stylesheet" href="/static/app.css">
 		<script src="https://pagecdn.io/lib/ace/1.4.5/ace.js" integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/simple-crypto-js@2.5.0/dist/SimpleCrypto.min.js"></script>
+		<script type="text/javascript" src="/static/app.js"></script>
 
 		<script>
 			window.onload = function() {
@@ -18,7 +21,7 @@
 		</script>
 	</head>
 	<body>
-		<form action="/new" method="post" class="textarea-size" onsubmit="document.getElementById('form-textarea').value = editor.getSession().getValue();">
+		<form action="/new" method="post" class="textarea-size" onsubmit="submit();">
 			<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
 				<div class="container-fluid">
 					<a class="navbar-brand" href="/">
@@ -30,8 +33,8 @@
 					
 					<div>
 						<button class="btn btn-sml btn-outline-secondary las la-wrench" type="Button"></button>
-						<button class="btn btn-sml btn-outline-secondary las la-clock" type="Button"></button>
-						<button class="btn btn-sml btn-outline-secondary las la-key" type="Button"></button>
+						<button class="btn btn-sml btn-outline-secondary las la-clock" type="button" data-bs-toggle="modal" data-bs-target="#expiration-modal" title="expiration options"></button>
+						<button class="btn btn-sml btn-outline-secondary las la-lock" type="button" data-bs-toggle="modal" data-bs-target="#encryption-modal" title="encryption options"></button>
 						
 						<select name="language" class="selectpicker" data-live-search="true" id="language">
 							{{#each categories}}
@@ -42,10 +45,49 @@
 								</optgroup>
 							{{/each}}
 						</select>
-						<button class="btn btn-sml btn-outline-secondary las la-save" type="submit"></button>
+						<button class="btn btn-sml btn-outline-secondary las la-save" type="submit" title="save"></button>
 					 </div>
 				</div>
 			</nav>
+
+			<div class="modal fade" id="encryption-modal" tabindex="-1" aria-labelledby="encryption-modal" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content bg-dark">
+						<div class="modal-header text-white">
+							<h5 class="modal-title" id="modal-label">Encrypt Paste</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body text-white">
+							<input name="encryption" id="encryption" class="form-control" placeholder="Encryption password"></input>
+							<p style="padding-top: 15px;">A blank password will not encrypt the paste</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="expiration-modal" tabindex="-1" aria-labelledby="expiration-modal" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content bg-dark">
+						<div class="modal-header text-white">
+							<h5 class="modal-title" id="modal-label" >Paste Expiration</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body text-white">
+							<div class="input-group mb-3">
+								<input type="number" name="expiration" id="expiration" class="form-control" min="0" value="0"></input>
+								<span class="input-group-text" id="basic-addon1">minutes</span>
+							</div>
+							<p>0 = never expire</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<textarea name="code" id="form-textarea"></textarea>
 
