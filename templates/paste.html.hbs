@@ -3,11 +3,14 @@
 	<head>
 		<title>ghostbin_rs - {{id}}</title>
 		<link rel="stylesheet" href="/static/app.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 		<script src="https://pagecdn.io/lib/ace/1.4.5/ace.js" integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/simple-crypto-js@2.5.0/dist/SimpleCrypto.min.js"></script>
+		<script type="text/javascript" src="/static/app.js"></script>
 	</head>
-	<body>
+	<body style="background-color: #2a2a2a;">
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">
@@ -38,5 +41,17 @@
 				editor.setOption("showPrintMargin", false);
 				editor.setReadOnly(true);
 			</script>
+
+			{{ #if encrypted }}
+				<script>
+					console.log("encrypted: {{encrypted}}");
+					document.getElementById('code-editor').hidden = true;
+				</script>
+				<div id="pass-form">
+					<input name="decryption-key" id="decryption-key" class="form-control" placeholder="Decryption password"></input>
+					<button class="btn btn-sml btn-outline-primary" title="Decrypt" onclick="decrypt(document.getElementById('decryption-key').value)">Decrypt</button>
+					<p id="crypto-error" style="color: red;"></p>
+				</div>
+			{{ /if }}
 	</body>
 </html>
