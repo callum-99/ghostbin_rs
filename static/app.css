@@ -32,3 +32,8 @@ nav {
 	background-color: #2a2a2a;
 	color: #ebebeb;
 }
+
+p {
+	font-size: 10px;
+	color: rgb(150, 150, 150);
+}
