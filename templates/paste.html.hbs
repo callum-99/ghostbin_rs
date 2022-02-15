@@ -19,13 +19,15 @@
 				</a>
 
 				<div>
-					<span class="navbar-text">{{id}}</span>
+					<span id="id" class="navbar-text">{{id}}</span>
 					<span class="navbar-text" style="color: white; font-size: 12px;">{{language.name}}</span>
 				</div>
 					
 				<div>
-					<a class="btn btn-sml btn-outline-secondary las la-file-alt" type="Button" href="{{id}}/raw"></a>
-					<a class="btn btn-sml btn-outline-secondary las la-download" type="Button" href="{{id}}/raw" download="{{id}}.txt"></a>
+					{{ #if not encrypted }} <!-- Disable raw if encrypted -->
+						<a class="btn btn-sml btn-outline-secondary las la-file-alt" type="Button" href="{{id}}/raw"></a>
+					{{ /if }}
+					<a id="save" class="btn btn-sml btn-outline-secondary las la-download" type="Button"></a>
 					<button class="btn btn-sml btn-outline-secondary las la-flag" type="Button"></button><!--Report-->
 					<button class="btn btn-sml btn-outline-secondary las la-save" type="Button"></button><!--Edit-->
 				 </div>
@@ -44,7 +46,6 @@
 
 			{{ #if encrypted }}
 				<script>
-					console.log("encrypted: {{encrypted}}");
 					document.getElementById('code-editor').hidden = true;
 				</script>
 				<div id="pass-form">
