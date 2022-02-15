@@ -10,13 +10,10 @@ function encrypt() {
 		text = cipher_text;
 	}
 
-	console.log(text);
-
 	document.getElementById('form-textarea').value = text;
 }
 
 function decrypt(key) {
-  
   if(key == "") {
     document.getElementById('crypto-error').innerHTML = "Empty password!";
     return;
@@ -28,7 +25,6 @@ function decrypt(key) {
   try {
     var plain_text = simpleCrypto.decrypt(cipher_text);
     editor.getSession().setValue(plain_text);
-    console.log(plain_text);
     document.getElementById('pass-form').hidden = true;
     document.getElementById('code-editor').hidden = false;
   }
@@ -37,3 +33,24 @@ function decrypt(key) {
     document.getElementById('crypto-error').innerHTML = "Incorrect password!";
   }
 }
+
+function downloadURI(uri, name) {
+  var link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  delete link;
+}
+
+function load() {
+  pasteID = document.getElementById('id').innerText;
+
+  document.getElementById("save").onclick = function() {
+    var content = editor.getSession().getValue();
+    downloadURI("data:application/txt," + encodeURIComponent(content), pasteID + ".txt");
+  }
+}
+
+document.addEventListener('DOMContentLoaded', load, false);
