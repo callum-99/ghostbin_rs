@@ -7,17 +7,18 @@ use xattr;
 pub fn get_paste(paste_id: String) -> Result<paste::Paste, String> {
 	let path = format!("{}/{}", config::Config::load().paste_path, paste_id);
 	if let Ok(paste_contents) = fs::read_to_string(&path) {
-		let language = std::str::from_utf8(&xattr::get(path, "language").unwrap().unwrap()).unwrap().to_string();
-		Ok(paste::Paste::simple(paste_id, languages::get_language_by_sname(language).unwrap(), false, paste_contents))
+		let language = std::str::from_utf8(&xattr::get(&path, "user.language").unwrap().unwrap()).unwrap().to_string();
+		let encrypted: bool = std::str::from_utf8(&xattr::get(path, "user.encrypted").unwrap().unwrap()).unwrap().to_string().parse().unwrap();
+		Ok(paste::Paste::simple(paste_id, languages::get_language_by_sname(language).unwrap(), encrypted, paste_contents))
 	} else {
 		Err("Paste not found".to_string())
 	}
 }
 
 pub fn set_xattr(path: &String, language: &String, encrypted: bool) -> Result<(), String> {
-	match xattr::set(path, "language", language.as_bytes()) {
+	match xattr::set(path, "user.language", language.as_bytes()) {
 		Ok(_) => {
-			match xattr::set(path, "encrypted", &[encrypted as u8]) {
+			match xattr::set(path, "user.encrypted", encrypted.to_string().as_bytes()) {
 				Ok(_) => return Ok(()),
 				Err(e) => {
 					return Err(format!("Can't set encrypted xattrs: {}", e))
