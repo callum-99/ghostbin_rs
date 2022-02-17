@@ -30,7 +30,7 @@ fn favicon() -> Redirect {
 fn new_paste(user_input: Form<paste::UserInput>) -> Result<Redirect, Status> {
 	let id = format!("{}", Uuid::new_v4().to_simple());
 	// println!("{:?}", user_input);
-	let paste = paste::Paste::new((&id).to_string(), languages::get_language_by_sname(String::from(&user_input.language)).unwrap(), !user_input.encryption.as_ref().unwrap().to_string().is_empty(), user_input.expiration, String::from(&user_input.code));
+	let paste = paste::Paste::new((&id).to_string(), languages::get_language_by_sname(String::from(&user_input.language)).unwrap(), !user_input.encryption.as_ref().unwrap().to_string().is_empty(), user_input.expiration * 60 * 1000, String::from(&user_input.code));
 	// println!("{:?}", &paste);
 	match file::write(paste) {
 		Ok(_) => Ok(Redirect::to(format!("/paste/{}", id))),
