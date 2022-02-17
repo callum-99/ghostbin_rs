@@ -1,4 +1,4 @@
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{SystemTime};
 
 use serde::{Serialize, Deserialize};
 
@@ -11,19 +11,19 @@ pub struct Paste {
 	pub id: String,
 	pub language: Language,
 	pub encrypted: bool,
+	pub expired: bool,
 	pub expiration: u64,
-	pub created: u64,
 	pub code: String,
 }
 
 impl Paste {
-	pub fn simple(id: String, language: Language, encrypted: bool, code: String) -> Paste {
+	pub fn simple(id: String, language: Language, encrypted: bool, expired: bool, code: String) -> Paste {
 		Paste {
 			id,
 			language,
 			encrypted,
+			expired,
 			expiration: 0,
-			created: SystemTime::now().duration_since(UNIX_EPOCH).expect("Error: negative time").as_millis() as u64,
 			code,
 		}
 	}
@@ -33,8 +33,11 @@ impl Paste {
 			id,
 			language,
 			encrypted,
-			expiration,
-			created: SystemTime::now().duration_since(UNIX_EPOCH).expect("Error: negative time").as_millis() as u64,
+			expired: false,
+			expiration: match expiration == 0 {
+				true => 0,
+				false => SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error").as_millis() as u64 + expiration
+			},
 			code,
 		}
 	}
